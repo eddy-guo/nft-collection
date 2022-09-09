@@ -18,12 +18,18 @@ contract duckFactory {
     // public dynamic array to store a raft of ducks :)
     Duck[] public ducks;
 
+    // mappings: duck to owner, owner to duck count (similar to kvp)
+    mapping (uint => address) public duckToOwner;
+    mapping (address => uint) ownerDuckCount;
+    
     // private function to create ducks and avoid other people creating ducks
     // _name stored in memory - if val changes in function, val of the original variable changes
     // parameter names start with underscore to differentiate from global variables (convention)
     function _createDuck (string memory _name, uint _dna) private {
         ducks.push(Duck(_name, _dna)); // add a new Duck to the array
         uint id = ducks.length - 1; // store the ducks' id
+        duckToOwner[id] = msg.sender;
+        ownerDuckCount[msg.sender]++; 
         emit NewDuck(id, _name, _dna); // emit event here, FE app can listen to emitted event
     }
 
