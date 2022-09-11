@@ -25,7 +25,7 @@ contract duckFactory {
     // private function to create ducks and avoid other people creating ducks
     // _name stored in memory - if val changes in function, val of the original variable changes
     // parameter names start with underscore to differentiate from global variables (convention)
-    function _createDuck (string memory _name, uint _dna) private {
+    function _createDuck (string memory _name, uint _dna) internal {
         ducks.push(Duck(_name, _dna)); // add a new Duck to the array
         uint id = ducks.length - 1; // store the ducks' id
         duckToOwner[id] = msg.sender; // map id of duck to address that called create function
