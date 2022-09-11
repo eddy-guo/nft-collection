@@ -5,11 +5,15 @@ pragma solidity ^0.8.0;
 import "./duckfactory.sol";
 
 contract DuckFeeding is duckFactory {
+
+    // multiply duck function - owner's duck with a target duck
     function feedAndMultiply (uint _duckId, uint _targetDna) public {
-        require(msg.sender == duckToOwner[_duckId]);
-        Duck storage myDuck = ducks[_duckId];
-        _targetDna = _targetDna % dnaMod;
-        uint newDna = (myDuck.dna + _targetDna) / 2;
+        require(msg.sender == duckToOwner[_duckId]); // need to own duck to multiply
+        Duck storage myDuck = ducks[_duckId]; // store current duck locally using storage keyword
+        _targetDna = _targetDna % dnaMod; // confirm that targetDna is correct # of digits
+        uint newDna = (myDuck.dna + _targetDna) / 2; // take average of the dna's
+        // access properties (ie dna) of any duck using "."
         _createDuck("tempName", newDna);
     }
+    
 }

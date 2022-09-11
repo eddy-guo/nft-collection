@@ -22,7 +22,8 @@ contract duckFactory {
     mapping (uint => address) public duckToOwner;
     mapping (address => uint) ownerDuckCount;
     
-    // private function to create ducks and avoid other people creating ducks
+    // internal function to create ducks and avoid other people creating ducks
+        // but allows other contracts to access in case multiplying nfts
     // _name stored in memory - if val changes in function, val of the original variable changes
     // parameter names start with underscore to differentiate from global variables (convention)
     function _createDuck (string memory _name, uint _dna) internal {
@@ -43,8 +44,8 @@ contract duckFactory {
     // public function that creates random duck - name generates unique dna, create duck!
     function _createRandomDuck (string memory _name) public {
         require(ownerDuckCount[msg.sender] == 0); // one duck per person!
-        uint randomDna = _generateRandomDna(_name);
-        _createDuck(_name, randomDna);
+        uint randomDna = _generateRandomDna(_name); // create random dna with string parameter
+        _createDuck(_name, randomDna); // create duck
     }
 
 }
