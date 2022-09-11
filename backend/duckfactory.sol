@@ -28,8 +28,8 @@ contract duckFactory {
     function _createDuck (string memory _name, uint _dna) private {
         ducks.push(Duck(_name, _dna)); // add a new Duck to the array
         uint id = ducks.length - 1; // store the ducks' id
-        duckToOwner[id] = msg.sender;
-        ownerDuckCount[msg.sender]++; 
+        duckToOwner[id] = msg.sender; // map id of duck to address that called create function
+        ownerDuckCount[msg.sender]++; // add 1 to total # of ducks the caller has
         emit NewDuck(id, _name, _dna); // emit event here, FE app can listen to emitted event
     }
 
@@ -42,6 +42,7 @@ contract duckFactory {
 
     // public function that creates random duck - name generates unique dna, create duck!
     function _createRandomDuck (string memory _name) public {
+        require(ownerDuckCount[msg.sender] == 0); // one duck per person!
         uint randomDna = _generateRandomDna(_name);
         _createDuck(_name, randomDna);
     }
