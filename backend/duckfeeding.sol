@@ -27,11 +27,14 @@ contract DuckFeeding is duckFactory {
     KittyInterface kittyContract  = KittyInterface(ckAddress);
 
     // multiply duck function - owner's duck with a target duck
-    function feedAndMultiply (uint _duckId, uint _targetDna) public {
+    function feedAndMultiply (uint _duckId, uint _targetDna, string memory _species) public {
         require(msg.sender == duckToOwner[_duckId]); // need to own duck to multiply
         Duck storage myDuck = ducks[_duckId]; // store current duck locally using storage keyword
         _targetDna = _targetDna % dnaMod; // confirm that targetDna is correct # of digits
         uint newDna = (myDuck.dna + _targetDna) / 2; // take average of the dna's
+        if (keccak256(abi.encodePacked(_species)) ==  keccak256(abi.encodePacked("kitty"))) {
+            newDna = newDna - newDna % 100 + 99;
+        }
         // access properties (ie dna) of any duck using "."
         _createDuck("tempName", newDna);
     }
@@ -39,6 +42,6 @@ contract DuckFeeding is duckFactory {
     function feedOnKitty (uint _duckId, uint _kittyId) public {
         uint kittyDna;
         (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
-        feedAndMultiply(_duckId, kittyDna);
+        feedAndMultiply(_duckId, kittyDna, "kitty");
     }
 }
