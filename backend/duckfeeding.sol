@@ -4,7 +4,27 @@ pragma solidity ^0.8.0;
 
 import "./duckfactory.sol";
 
+abstract contract BreadInterface {
+    // function taken from cryptokitty contract
+        // why error thrown when not declared as virtual? all functions in interfaces treated as virtual??
+    function getKitty(uint256 _id) virtual external view returns (
+        bool isGestating,
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 nextActionAt,
+        uint256 siringWithId,
+        uint256 birthTime,
+        uint256 matronId,
+        uint256 sireId,
+        uint256 generation,
+        uint256 genes
+    );
+}
+
 contract DuckFeeding is duckFactory {
+
+    address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+    BreadInterface breadContract  = BreadInterface(ckAddress);
 
     // multiply duck function - owner's duck with a target duck
     function feedAndMultiply (uint _duckId, uint _targetDna) public {
@@ -15,5 +35,4 @@ contract DuckFeeding is duckFactory {
         // access properties (ie dna) of any duck using "."
         _createDuck("tempName", newDna);
     }
-    
 }
