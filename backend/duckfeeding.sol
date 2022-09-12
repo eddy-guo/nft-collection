@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 
 import "./duckfactory.sol";
 
+// interface to interact with other contracts (cryptokitty in this case)
 abstract contract KittyInterface {
     // function taken from cryptokitty contract
-        // why error thrown when not declared as virtual? all functions in interfaces treated as virtual??
     function getKitty(uint256 _id) virtual external view returns (
         bool isGestating,
         bool isReady,
@@ -23,6 +23,7 @@ abstract contract KittyInterface {
 
 contract DuckFeeding is duckFactory {
 
+    // initialize KittyInterface contract to have cryptokitty contract interact with DuckFeeding
     address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     KittyInterface kittyContract  = KittyInterface(ckAddress);
 
@@ -32,6 +33,7 @@ contract DuckFeeding is duckFactory {
         Duck storage myDuck = ducks[_duckId]; // store current duck locally using storage keyword
         _targetDna = _targetDna % dnaMod; // confirm that targetDna is correct # of digits
         uint newDna = (myDuck.dna + _targetDna) / 2; // take average of the dna's
+        // change dna if duck+kitty species
         if (keccak256(abi.encodePacked(_species)) ==  keccak256(abi.encodePacked("kitty"))) {
             newDna = newDna - newDna % 100 + 99;
         }
@@ -39,9 +41,14 @@ contract DuckFeeding is duckFactory {
         _createDuck("tempName", newDna);
     }
 
+    // duck+kitty; get kitty genes from contract to eventually feedandmultiply
     function feedOnKitty (uint _duckId, uint _kittyId) public {
-        uint kittyDna;
-        (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+        uint kittyDna; // declaration
+        /* 
+        kittyDna in place of "genes", all other returned parameters are ignored
+        finds kitty from cryptokitty contract (_kittyId), store gene value in kittyDna
+        */ 
+        (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId); // important syntax
         feedAndMultiply(_duckId, kittyDna, "kitty");
     }
 }
