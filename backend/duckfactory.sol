@@ -47,5 +47,5 @@ contract duckFactory {
         uint randomDna = _generateRandomDna(_name); // create random dna with string parameter
         _createDuck(_name, randomDna); // create duck
     }
-
+ 
 }
