@@ -24,8 +24,11 @@ abstract contract KittyInterface {
 contract DuckFeeding is duckFactory {
 
     // initialize KittyInterface contract to have cryptokitty contract interact with DuckFeeding
-    address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-    KittyInterface kittyContract  = KittyInterface(ckAddress);
+    KittyInterface kittyContract;
+    // 
+    function setKittyContractAddress (address _address) external {
+        kittyContract = KittyInterface(_address);
+    }
 
     // multiply duck function - owner's duck with a target duck
     function feedAndMultiply (uint _duckId, uint _targetDna, string memory _species) public {
