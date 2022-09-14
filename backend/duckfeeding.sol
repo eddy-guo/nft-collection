@@ -26,7 +26,7 @@ contract DuckFeeding is duckFactory {
     // initialize KittyInterface contract to have cryptokitty contract interact with DuckFeeding
     KittyInterface kittyContract;
     // 
-    function setKittyContractAddress (address _address) external {
+    function setKittyContractAddress (address _address) external onlyOwner {
         kittyContract = KittyInterface(_address);
     }
 
