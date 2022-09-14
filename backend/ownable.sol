@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.0;
 
+// note: updated version on openzeppelin github
+
 /**
 * @title Ownable
 * @dev The Ownable contract has an owner address, and provides basic authorization control
