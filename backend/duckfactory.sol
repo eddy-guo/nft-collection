@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "./ownable.sol";
 
-contract duckFactory {
+contract duckFactory is Ownable {
 
     event NewDuck(uint duckId, string name, uint dna); // event declaration
 
